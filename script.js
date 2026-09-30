@@ -19,8 +19,15 @@ function saveData() {
   localStorage.setItem(BUDGET_KEY, budget);
 }
 
+function localDateString(date = new Date()) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+
 function getMonthKey(date = new Date()) {
-  return date.toISOString().slice(0, 7);
+  return localDateString(date).slice(0, 7);
 }
 
 function currentMonthTransactions() {
@@ -53,7 +60,7 @@ function iconFor(category) {
 }
 
 function todayTransactions() {
-  const today = new Date().toISOString().slice(0, 10);
+  const today = localDateString();
   return transactions.filter(t => t.date === today);
 }
 
@@ -79,7 +86,7 @@ function renderToday() {
   ).getDate();
 
   const dailyLimit = budget > 0 ? budget / daysInMonth : 0;
-  $("todayDailyLimit").textContent = budget > 0 ? rupiah(dailyLimit) : "Rp0";
+  $("todayDailyLimit").textContent = budget > 0 ? rupiah(dailyLimit) : rupiah(0);
 
   $("todayTransactionList").innerHTML = todayData.length
     ? [...todayData].sort((a, b) => b.id - a.id).map(t => transactionHTML(t, true)).join("")
@@ -116,7 +123,7 @@ function renderDashboard() {
   ).getDate();
 
   const dailyLimit = budget > 0 ? budget / daysInMonth : 0;
-  $("dailyLimit").textContent = budget > 0 ? rupiah(dailyLimit) : "Rp0";
+  $("dailyLimit").textContent = budget > 0 ? rupiah(dailyLimit) : rupiah(0);
   $("dailyInfo").textContent = budget > 0
     ? "Rata-rata batas per hari"
     : "Atur budget bulanan";
@@ -146,7 +153,7 @@ function renderCategories(monthData) {
 
   $("categoryChart").innerHTML = data.map(([category, amount]) => `
     <div class="category-row">
-      <div class="category-name">${iconFor(category)} ${category}</div>
+      <div class="category-name">${iconFor(category)} ${escapeHTML(category)}</div>
       <div class="bar-bg">
         <div class="bar" style="width:${(amount / max) * 100}%"></div>
       </div>
@@ -155,24 +162,36 @@ function renderCategories(monthData) {
   `).join("");
 }
 
+function escapeHTML(str) {
+  return String(str == null ? "" : str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 function transactionHTML(t, showDelete = false) {
   const sign = t.type === "income" ? "+" : "-";
   const colorClass = t.type === "income" ? "income-text" : "expense-text";
+  const safeTitle = escapeHTML(t.note || t.category);
+  const safeCategory = escapeHTML(t.category);
+  const safeId = escapeHTML(t.id);
 
   return `
     <div class="transaction">
       <div class="transaction-info">
         <div class="transaction-icon">${iconFor(t.category)}</div>
         <div>
-          <div class="transaction-title">${t.note || t.category}</div>
-          <div class="transaction-date">${t.category} • ${formatDate(t.date)}</div>
+          <div class="transaction-title">${safeTitle}</div>
+          <div class="transaction-date">${safeCategory} • ${formatDate(t.date)}</div>
         </div>
       </div>
       <div>
         <span class="transaction-amount ${colorClass}">
           ${sign}${rupiah(t.amount)}
         </span>
-        ${showDelete ? `<button class="delete-btn" onclick="deleteTransaction('${t.id}')">Hapus</button>` : ""}
+        ${showDelete ? `<button class="delete-btn" onclick="deleteTransaction('${safeId}')">Hapus</button>` : ""}
       </div>
     </div>
   `;
@@ -262,7 +281,7 @@ $("themeToggle").addEventListener("click", (e) => {
 
 function openModal() {
   $("modal").classList.add("show");
-  $("date").value = new Date().toISOString().slice(0, 10);
+  $("date").value = localDateString();
 }
 
 function closeModal() {
@@ -274,6 +293,10 @@ $("closeModal").addEventListener("click", closeModal);
 
 $("modal").addEventListener("click", (e) => {
   if (e.target === $("modal")) closeModal();
+});
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && $("modal").classList.contains("show")) closeModal();
 });
 
 $("transactionForm").addEventListener("submit", (e) => {
@@ -297,7 +320,7 @@ $("transactionForm").addEventListener("submit", (e) => {
   });
 
   e.target.reset();
-  $("date").value = new Date().toISOString().slice(0, 10);
+  $("date").value = localDateString();
 
   closeModal();
   refresh();
@@ -358,6 +381,6 @@ window.deleteTransaction = function(id) {
 };
 
 $("budgetInput").value = budget || "";
-$("date").value = new Date().toISOString().slice(0, 10);
+$("date").value = localDateString();
 
 refresh();
