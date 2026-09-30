@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KostFinance - Keuangan Mahasiswa</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">K</div>
+        <div>
+          <h2>KostFinance</h2>
+          <span>Keuangan Mahasiswa</span>
+        </div>
+      </div>
+
+      <nav>
+        <button class="nav-item active" data-section="dashboard">🏠 Dashboard</button>
+        <button class="nav-item" data-section="transactions">📋 Transaksi</button>
+        <button class="nav-item" data-section="budget">🎯 Budget</button>
+        <button class="nav-item" data-section="hari-ini">📅 Hari Ini</button>
+      </nav>
+
+      <div class="sidebar-note">
+        <strong>💡 Tips</strong>
+        <p>Catat pengeluaran setiap hari supaya kamu tahu uangmu dipakai untuk apa.</p>
+      </div>
+    </aside>
+
+    <main class="content">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Keuangan saya</p>
+          <h1 id="pageTitle">Dashboard</h1>
+        </div>
+        <button class="primary-btn" id="openModal">＋ Tambah Transaksi</button>
+      </header>
+
+      <section id="dashboard" class="page-section active">
+        <div class="summary-grid">
+          <div class="summary-card balance">
+            <span>Saldo Saat Ini</span>
+            <strong id="balance">Rp0</strong>
+            <small>Saldo dari seluruh transaksi</small>
+          </div>
+          <div class="summary-card income">
+            <span>Total Pemasukan</span>
+            <strong id="income">Rp0</strong>
+            <small>Bulan ini</small>
+          </div>
+          <div class="summary-card expense">
+            <span>Total Pengeluaran</span>
+            <strong id="expense">Rp0</strong>
+            <small>Bulan ini</small>
+          </div>
+          <div class="summary-card daily">
+            <span>Batas Harian</span>
+            <strong id="dailyLimit">Rp0</strong>
+            <small id="dailyInfo">Atur budget bulanan</small>
+          </div>
+        </div>
+
+        <div class="dashboard-grid">
+          <div class="card">
+            <div class="card-head">
+              <div>
+                <h3>Pengeluaran Bulan Ini</h3>
+                <p>Berdasarkan kategori</p>
+              </div>
+            </div>
+            <div id="categoryChart" class="category-list">
+              <div class="empty">Belum ada pengeluaran.</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <div>
+                <h3>Transaksi Terbaru</h3>
+                <p>5 transaksi terakhir</p>
+              </div>
+              <button class="text-btn" data-go="transactions">Lihat semua</button>
+            </div>
+            <div id="recentTransactions"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="transactions" class="page-section">
+        <div class="card">
+          <div class="card-head transaction-head">
+            <div>
+              <h3>Riwayat Transaksi</h3>
+              <p>Semua pemasukan dan pengeluaranmu</p>
+            </div>
+            <select id="filterType">
+              <option value="all">Semua</option>
+              <option value="income">Pemasukan</option>
+              <option value="expense">Pengeluaran</option>
+            </select>
+          </div>
+          <div id="transactionList"></div>
+        </div>
+      </section>
+
+<section id="budget" class="page-section">
+         <div class="budget-layout">
+           <div class="card">
+             <div class="card-head">
+               <div>
+                 <h3>Budget Bulanan</h3>
+                 <p>Tentukan batas pengeluaranmu</p>
+               </div>
+             </div>
+
+             <form id="budgetForm" class="form">
+               <label>
+                 Budget bulan ini
+                 <div class="input-money">
+                   <span>Rp</span>
+                   <input id="budgetInput" type="number" min="0" placeholder="Contoh: 1500000" required>
+                 </div>
+               </label>
+               <button class="primary-btn" type="submit">Simpan Budget</button>
+             </form>
+           </div>
+
+           <div class="card budget-status">
+             <span>Budget bulan ini</span>
+             <strong id="budgetAmount">Rp0</strong>
+             <div class="progress">
+               <div id="budgetProgress"></div>
+             </div>
+             <p id="budgetMessage">Belum ada budget.</p>
+           </div>
+         </div>
+       </section>
+
+       <section id="hari-ini" class="page-section">
+         <div class="card">
+           <div class="card-head">
+             <div>
+               <h3>Kondisi Keuangan Hari Ini</h3>
+               <p>Ringkasan pemasukan dan pengeluaranmu untuk hari ini</p>
+             </div>
+           </div>
+           <div class="daily-summary-grid">
+             <div class="summary-card daily-income">
+               <span>Pemasukan Hari Ini</span>
+               <strong id="todayIncome">Rp0</strong>
+               <small>Total pemasukan hari ini</small>
+             </div>
+             <div class="summary-card daily-expense">
+               <span>Pengeluaran Hari Ini</span>
+               <strong id="todayExpense">Rp0</strong>
+               <small>Total pengeluaran hari ini</small>
+             </div>
+             <div class="summary-card daily-balance">
+               <span>Saldo Hari Ini</span>
+               <strong id="todayBalance">Rp0</strong>
+               <small>Pemasukan - Pengeluaran</small>
+             </div>
+             <div class="summary-card daily-limit">
+               <span>Batas Harian</span>
+               <strong id="todayDailyLimit">Rp0</strong>
+               <small>Batas harian dari budget bulanan</small>
+             </div>
+           </div>
+
+           <div class="card">
+             <div class="card-head">
+               <div>
+                 <h3>Transaksi Hari Ini</h3>
+                 <p>Detail transaksi untuk hari ini</p>
+               </div>
+             </div>
+             <div id="todayTransactionList"></div>
+           </div>
+         </div>
+       </section>
+    </main>
+  </div>
+
+  <div class="modal" id="modal">
+    <div class="modal-box">
+      <button class="close-btn" id="closeModal">×</button>
+      <h2>Tambah Transaksi</h2>
+      <p class="modal-subtitle">Catat pemasukan atau pengeluaranmu.</p>
+
+      <form id="transactionForm" class="form">
+        <div class="type-toggle">
+          <label>
+            <input type="radio" name="type" value="expense" checked>
+            <span>Pengeluaran</span>
+          </label>
+          <label>
+            <input type="radio" name="type" value="income">
+            <span>Pemasukan</span>
+          </label>
+        </div>
+
+        <label>
+          Nominal
+          <div class="input-money">
+            <span>Rp</span>
+            <input id="amount" type="number" min="1" placeholder="Contoh: 25000" required>
+          </div>
+        </label>
+
+        <label>
+          Kategori
+          <select id="category" required>
+            <option value="Makan">🍚 Makan</option>
+            <option value="Bensin">🛵 Bensin</option>
+            <option value="Kos">🏠 Kos</option>
+            <option value="Pulsa">📱 Pulsa</option>
+            <option value="Kuliah">📚 Kuliah</option>
+            <option value="Laundry">👕 Laundry</option>
+            <option value="Warkop">☕ Warkop</option>
+            <option value="Belanja">🛒 Belanja</option>
+            <option value="Lainnya">📦 Lainnya</option>
+          </select>
+        </label>
+
+        <label>
+          Tanggal
+          <input id="date" type="date" required>
+        </label>
+
+        <label>
+          Catatan
+          <input id="note" type="text" maxlength="60" placeholder="Contoh: Makan siang">
+        </label>
+
+        <button class="primary-btn full" type="submit">Simpan Transaksi</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
