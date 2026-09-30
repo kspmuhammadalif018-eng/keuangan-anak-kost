@@ -348,19 +348,28 @@ h1 {
 
 .category-list {
   display: grid;
-  gap: 14px;
+  gap: 6px;
 }
 
 .category-row {
   display: grid;
-  grid-template-columns: 85px 1fr 105px;
+  grid-template-columns: minmax(110px, 150px) 1fr minmax(100px, auto);
   align-items: center;
-  gap: 10px;
-  font-size: 12px;
+  gap: 12px;
+  font-size: 13px;
+  padding: 10px 4px;
+  border-bottom: 1px solid var(--border);
+}
+
+.category-row:last-child {
+  border-bottom: 0;
 }
 
 .category-name {
   font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .bar-bg {
@@ -380,7 +389,9 @@ h1 {
 
 .category-value {
   text-align: right;
-  color: var(--muted);
+  color: var(--text);
+  font-weight: 700;
+  white-space: nowrap;
 }
 
 body.dark .summary-card small {
@@ -391,16 +402,15 @@ body.dark .summary-card small {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 13px 0;
+  gap: 12px;
+  padding: 13px 4px;
   border-bottom: 1px solid var(--border);
-  transition: background-color 0.2s, padding 0.2s;
+  transition: background-color 0.2s;
 }
 
 .transaction:hover {
   background: rgba(37, 99, 235, 0.04);
   border-radius: 8px;
-  padding-left: 8px;
-  padding-right: 8px;
 }
 
 .transaction:last-child {
@@ -411,6 +421,19 @@ body.dark .summary-card small {
   display: flex;
   align-items: center;
   gap: 11px;
+  min-width: 0;
+  flex: 1;
+}
+
+.transaction-info > div:last-child {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.transaction > div:last-child {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
 }
 
 .transaction-icon {
@@ -431,17 +454,22 @@ body.dark .summary-card small {
 .transaction-title {
   font-size: 13px;
   font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .transaction-date {
   color: var(--muted);
   font-size: 11px;
   margin-top: 4px;
+  white-space: nowrap;
 }
 
 .transaction-amount {
   font-size: 13px;
   font-weight: bold;
+  white-space: nowrap;
 }
 
 .income-text {
@@ -800,6 +828,8 @@ body.dark .summary-card small {
   }
 
   .category-row {
-    grid-template-columns: 70px 1fr 85px;
+    grid-template-columns: minmax(85px, 110px) 1fr minmax(80px, auto);
+    gap: 8px;
+    font-size: 12px;
   }
 }
