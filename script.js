@@ -237,6 +237,29 @@ function refresh() {
   renderToday();
 }
 
+const THEME_KEY = "kostfinance_theme";
+
+function applyTheme(theme) {
+  const isDark = theme === "dark";
+  document.body.classList.toggle("dark", isDark);
+  const btn = $("themeToggle");
+  if (btn) btn.textContent = isDark ? "☀️" : "🌙";
+  localStorage.setItem(THEME_KEY, theme);
+}
+
+(function initTheme() {
+  const saved = localStorage.getItem(THEME_KEY) || "light";
+  applyTheme(saved === "dark" ? "dark" : "light");
+})();
+
+$("themeToggle").addEventListener("click", (e) => {
+  const btn = e.currentTarget;
+  btn.style.transform = "scale(0.85) rotate(-15deg)";
+  setTimeout(() => { btn.style.transform = ""; }, 180);
+  const next = document.body.classList.contains("dark") ? "light" : "dark";
+  applyTheme(next);
+});
+
 function openModal() {
   $("modal").classList.add("show");
   $("date").value = new Date().toISOString().slice(0, 10);

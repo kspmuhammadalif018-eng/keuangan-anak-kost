@@ -31,12 +31,15 @@
     </aside>
 
     <main class="content">
-      <header class="topbar">
+      <header class="topbar" id="topbar">
         <div>
           <p class="eyebrow">Keuangan saya</p>
           <h1 id="pageTitle">Dashboard</h1>
         </div>
-        <button class="primary-btn" id="openModal">＋ Tambah Transaksi</button>
+        <div class="topbar-actions">
+          <button class="theme-toggle" id="themeToggle" title="Ganti mode gelap / terang" aria-label="Ganti mode gelap atau terang">🌙</button>
+          <button class="primary-btn" id="openModal">＋ Tambah Transaksi</button>
+        </div>
       </header>
 
       <section id="dashboard" class="page-section active">
@@ -139,48 +142,40 @@
          </div>
        </section>
 
-       <section id="hari-ini" class="page-section">
-         <div class="card">
-           <div class="card-head">
-             <div>
-               <h3>Kondisi Keuangan Hari Ini</h3>
-               <p>Ringkasan pemasukan dan pengeluaranmu untuk hari ini</p>
-             </div>
-           </div>
-           <div class="daily-summary-grid">
-             <div class="summary-card daily-income">
-               <span>Pemasukan Hari Ini</span>
-               <strong id="todayIncome">Rp0</strong>
-               <small>Total pemasukan hari ini</small>
-             </div>
-             <div class="summary-card daily-expense">
-               <span>Pengeluaran Hari Ini</span>
-               <strong id="todayExpense">Rp0</strong>
-               <small>Total pengeluaran hari ini</small>
-             </div>
-             <div class="summary-card daily-balance">
-               <span>Saldo Hari Ini</span>
-               <strong id="todayBalance">Rp0</strong>
-               <small>Pemasukan - Pengeluaran</small>
-             </div>
-             <div class="summary-card daily-limit">
-               <span>Batas Harian</span>
-               <strong id="todayDailyLimit">Rp0</strong>
-               <small>Batas harian dari budget bulanan</small>
-             </div>
-           </div>
+        <section id="hari-ini" class="page-section">
+          <div class="daily-summary-grid">
+            <div class="summary-card daily-income">
+              <span>Pemasukan Hari Ini</span>
+              <strong id="todayIncome">Rp0</strong>
+              <small>Total pemasukan hari ini</small>
+            </div>
+            <div class="summary-card daily-expense">
+              <span>Pengeluaran Hari Ini</span>
+              <strong id="todayExpense">Rp0</strong>
+              <small>Total pengeluaran hari ini</small>
+            </div>
+            <div class="summary-card daily-balance">
+              <span>Saldo Hari Ini</span>
+              <strong id="todayBalance">Rp0</strong>
+              <small>Pemasukan - Pengeluaran</small>
+            </div>
+            <div class="summary-card daily-limit">
+              <span>Batas Harian</span>
+              <strong id="todayDailyLimit">Rp0</strong>
+              <small>Batas harian dari budget bulanan</small>
+            </div>
+          </div>
 
-           <div class="card">
-             <div class="card-head">
-               <div>
-                 <h3>Transaksi Hari Ini</h3>
-                 <p>Detail transaksi untuk hari ini</p>
-               </div>
-             </div>
-             <div id="todayTransactionList"></div>
-           </div>
-         </div>
-       </section>
+          <div class="card">
+            <div class="card-head">
+              <div>
+                <h3>Transaksi Hari Ini</h3>
+                <p>Detail transaksi untuk hari ini</p>
+              </div>
+            </div>
+            <div id="todayTransactionList"></div>
+          </div>
+        </section>
     </main>
   </div>
 
